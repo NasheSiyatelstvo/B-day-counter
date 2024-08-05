@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday counter</title>
+    <style>
+        .error {
+            color: red
+        }
+    </style>
+</head>
+<body>
+    <h1>Расчет количества дней до дня рождения</h1>
+    <label for="date">Дата сообщения</label>
+    <input type="date" name="birthdayDate" id="birthdayDate">
+    <button onclick="calculateDaysBirthday()">Рассчитать</button>
+    <p id="result"></p>
+    <script>
+        const birthdayDate = document.querySelector('#birthdayDate');
+        const resultInput = document.querySelector('#result');
+        function calculateDaysBirthday() {
+            const birthdayDateStr = birthdayDate.value;
+            if(birthdayDateStr === '') {
+                resultInput.textContent = "Введите дату";
+                resultInput.classList.add('error')
+                return;
+            } 
+            else {
+                resultInput.classList.remove('error')
+            }
+            const birthdayTimestamp = Date.parse(birthdayDateStr);
+            console.log(birthdayTimestamp);
+            const currentTimestamp = Date.now();
+            const timeDifference = birthdayTimestamp - currentTimestamp;
+            const daysPassed = Math.floor(timeDifference/(1000 * 60 * 60 * 24));
+            resultInput.textContent = `До Вашего дня рождения осталось: ${daysPassed} ${getDayString(daysPassed)}`;
+        }
+
+        function getDayString(number) {
+            const forms = ['день', 'дня', 'дней'];
+            const lastDigit = number % 10;
+            const lastTwoDigits = number % 100;
+
+            if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+                return forms[2];
+            } else if (lastDigit === 1) {
+                return forms[0];
+            } else if (lastDigit >= 2 && lastDigit <= 4) {
+                return forms[1];
+            } else {
+                return forms[2];
+            }
+        }
+    </script>
+</body>
+</html>
